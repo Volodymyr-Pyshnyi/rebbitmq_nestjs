@@ -1,0 +1,8 @@
+.idea
+*.iml
+out
+gen
+docker-compose.yml
+sh_update_artifact.sh
+.docker
+**/**/node_modules

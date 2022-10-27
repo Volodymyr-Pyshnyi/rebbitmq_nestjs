@@ -1,0 +1,69 @@
+version: '3.7'
+
+networks:
+  rabbitmq-manage:
+  be-master:
+  ms-sum:
+  ms-other:
+
+volumes:
+  rabbitmq_node_modules:
+  be_master_node_modules:
+  ms_sum_node_modules:
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    restart: unless-stopped
+    image: rabbitmq:3.11-alpine
+    networks:
+      - rabbitmq-manage
+      - be-master
+      - ms-sum
+
+    ports:
+      - "3008:3000"
+
+  rabbitmq-manage:
+    container_name: rabbitmq-manag
+    restart: unless-stopped
+    image: rabbitmq:3.11-management-alpine
+    networks:
+      - rabbitmq-manage
+
+    ports:
+      - "8082:15672"
+
+  backend_master:
+    container_name: Backend_master
+    image: backend-master-image:0
+    volumes:
+      - be_master_node_modules:/var/www/app
+
+    build:
+      context: ./.docker/be-master
+      dockerfile: Dockerfile
+
+    networks:
+      - be-master
+
+    ports:
+      - "3012:3000"
+
+  micro_service_sum:
+    container_name: Micro_service_sum
+    restart: unless-stopped
+    image: micro-service-sum-image:0
+
+    volumes:
+      - be_master_node_modules:/var/www/app
+
+    build:
+      context: ./.docker/ms-sum
+      dockerfile: Dockerfile
+
+    networks:
+      - ms-sum
+
+    ports:
+      - "30010:3000"

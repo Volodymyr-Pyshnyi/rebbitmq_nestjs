@@ -35,7 +35,7 @@ services:
       - "8082:15672"
 
   backend_master:
-    container_name: Backend_master
+    container_name: backend_master
     image: backend-master-image:0
     volumes:
       - be_master_node_modules:/var/www/app
@@ -51,7 +51,7 @@ services:
       - "3012:3000"
 
   micro_service_sum:
-    container_name: Micro_service_sum
+    container_name: micro_service_sum
     restart: unless-stopped
     image: micro-service-sum-image:0
 

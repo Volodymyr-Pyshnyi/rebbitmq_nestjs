@@ -1,0 +1,2 @@
+docker volume rm be_master_node_modules
+docker volume rm ms_sum_node_modules

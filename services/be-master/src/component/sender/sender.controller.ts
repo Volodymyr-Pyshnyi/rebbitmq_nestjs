@@ -1,4 +1,4 @@
-import {Controller, Get, HttpCode} from '@nestjs/common';
+import {Controller, Get, HttpCode, Query} from '@nestjs/common';
 import {SenderService} from "./sender.service";
 
 
@@ -10,7 +10,7 @@ export class SenderController {
   }
   @Get(``)
   @HttpCode(200)
-  public sender(){
-    return this.service.getResult();
+  public sender(@Query() query): string{
+    return this.service.getResult(query);
   }
 }

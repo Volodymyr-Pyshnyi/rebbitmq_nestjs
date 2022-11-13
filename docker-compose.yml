@@ -17,29 +17,24 @@ volumes:
 
 
 services:
-  rabbitmq:
-    container_name: rabbitmq
-    restart: unless-stopped
-    image: rabbitmq:3.11-alpine
-
-    networks:
-      - rabbitmq-manage
-      - be-master
-      - ms-sum
-
-    ports:
-      - "3008:5672"
-
   rabbitmq-manage:
-    container_name: rabbitmq-manag
+    container_name: rabbitmq_management
     restart: unless-stopped
     image: rabbitmq:3.11-management-alpine
 
     networks:
-      - rabbitmq-manage
+      - be-master
+      - ms-sum
 
     ports:
-      - "8082:15672"
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
 
   backend_master:
     container_name: backend_master

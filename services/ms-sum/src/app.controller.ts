@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import {Controller} from '@nestjs/common';
+import {Ctx, MessagePattern, Payload, RmqContext} from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  data: Number[] = [];
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @MessagePattern('microservice_sum')
+  async getNotifications( @Payload() data: number, @Ctx() context: RmqContext) {
+    this.data = Object.values(data['sum']);
+    return  this.data.reduce((a,b)=> Number(a )+ Number(b));
   }
+
 }

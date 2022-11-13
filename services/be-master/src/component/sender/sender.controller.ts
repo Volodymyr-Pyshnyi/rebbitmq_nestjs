@@ -10,7 +10,7 @@ export class SenderController {
   }
   @Get(``)
   @HttpCode(200)
-  public sender(@Query() query): string{
-    return this.service.getResult(query);
+  public async sender(@Query() query): Promise<string>{
+    return await this.service.getResult(query);
   }
 }

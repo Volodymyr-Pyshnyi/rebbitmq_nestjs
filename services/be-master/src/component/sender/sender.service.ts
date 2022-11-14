@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RmqRecordBuilder } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class SenderService {
@@ -19,7 +19,7 @@ export class SenderService {
         priority: 3,
       })
       .build();
-    this.sum = await lastValueFrom(
+    this.sum = await firstValueFrom(
       this.client.send('microservice_sum', record),
     );
 

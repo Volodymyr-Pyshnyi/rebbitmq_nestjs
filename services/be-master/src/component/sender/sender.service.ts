@@ -1,5 +1,6 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {ClientProxy, RmqRecordBuilder} from '@nestjs/microservices';
+import {lastValueFrom} from 'rxjs';
 
 @Injectable()
 export class SenderService {
@@ -16,25 +17,9 @@ export class SenderService {
         },
         priority: 3,
       }).build();
+    this.sum = await lastValueFrom(this.client.send('microservice_sum', record));
 
-    const result = this.client.send('microservice_sum', record).subscribe(r => {
-      console.log(r);
-    });
-    // const result =  this.sendToQueues(record)
-    // .subscribe((result: Number) => {
-    //   console.log(result);
-    //   this.sum = Number(result);
-    // })
-
-    console.log(result);
-    // console.log(await this.sum);
-    // console.log( this.sendToQueues(query))
-    if (this.sum) {
-
-    }
     return `Your request: [${query.sum}]<br/><br/>Your result: ${this.sum}`;
-
   }
-
 
 }
